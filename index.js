@@ -2,12 +2,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const dotenv = require('dotenv')
 
 const postRoutes = require('./routes/posts'); 
 const userRoutes = require('./routes/user');
 
 const app = express();
 
+dotenv.config()
 
 app.use(bodyParser.json({ limit: "30mb", extended: true}));
 app.use(bodyParser.urlencoded({ limit: "30mb", extended: true}));
@@ -20,10 +22,10 @@ app.use('/user', userRoutes)
 
 app.get('/', (req, res)=>{ 
     res.send("Hello to memories API")
-})
+})  
 
-
-const PORT = process.env.PORT;
+ 
+const PORT = process.env.PORT  || 5000;
   
 mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true}) 
     .then(() => app.listen(PORT, ()=> console.log(`Server running on port: ${PORT}`)))
