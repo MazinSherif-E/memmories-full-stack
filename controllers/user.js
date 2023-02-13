@@ -17,17 +17,16 @@ const signin = async (req, res) =>{
         const user = await User.findOne({ email })
         if(!user) throw new Error('Email not found')
         
-        const isMatch = await bcrypt.compare(password, user.password)
+        const isMatch = await bcrypt.compare(password, user.password)  
         if(!isMatch) throw new Error('Password isn\'t correct')
-        // JWT_SECRET
-        // REFRESH_JWT_SECRET
+        
         const token = jwt.sign({ _id: user._id.toString()}, process.env.JWT_SECRET, { expiresIn:  "15m" })
 
         user.tokens = user.tokens.concat({ token })
         await user.save()
         res.status(201).send({ user, token })
     }catch(e){
-        res.status(404).send(e.message)
+        res.status(404).send(e.message) 
     }
 }
 
